@@ -4,7 +4,7 @@ const initialTravellers = [
     id: 1, name: 'Jack', phone: 88885555,
     bookingTime: new Date(),
     email: 'jack@outlook.com',
-    seatNumber: 'A01',
+    seatNumber: '1',
     trainNumber: 'train-0001',
 
   },
