@@ -74,6 +74,25 @@ class Add extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
+    const form = document.forms.addTraveller;
+    const seatNumber = form.seatNumber.value.trim(); // to remove white spaces
+    if (parseInt(seatNumber, 10) < 1 || parseInt(seatNumber, 10) > 100) {
+        alert('Please enter a seat number between 1 and 100.');
+        return;
+    }
+    const passenger = {
+      name: form.travellername.value.trim(),
+      phone: form.phone.value.trim(),
+      email: form.email.value.trim(),
+      seatNumber: seatNumber,
+      trainNumber: form.trainNumber.value.trim(),
+    };
+    this.props.bookTraveller(passenger);
+    form.travellername.value = '';
+    form.phone.value = '';
+    form.email.value = '';
+    form.seatNumber.value = '';
+    form.trainNumber.value = '';
   }
 
   render() {
@@ -81,6 +100,10 @@ class Add extends React.Component {
       <form name="addTraveller" onSubmit={this.handleSubmit}>
 	    {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
         <input type="text" name="travellername" placeholder="Name" />
+        <input type="text" name="phone" placeholder="Phone" />
+        <input type="text" name="email" placeholder="Email" />
+        <input type="text" name="seatNumber" placeholder="Seat Number" />
+        <input type="text" name="trainNumber" placeholder="Train Number" />  
         <button>Add</button>
       </form>
     );
@@ -169,7 +192,22 @@ class TicketToRide extends React.Component {
 
   bookTraveller(passenger) {
 	    /*Q4. Write code to add a passenger to the traveller state variable.*/
-  }
+      const seatOccupied = this.state.travellers.some(
+        traveller => traveller.seatNumber === passenger.seatNumber
+      );
+      if (seatOccupied) {
+        alert('Seat is already occupied. Please choose another seat.');
+        return;
+      }
+      passenger.id = this.state.travellers.length + 1;
+      passenger.bookingTime = new Date();
+      this.setState(prevState => {
+        const newTravellers = [...prevState.travellers, passenger];
+        console.log('New travellers:', newTravellers); // to see if works
+        return { travellers: newTravellers };
+      });
+      
+    }
 
   deleteTraveller(passenger) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
@@ -192,6 +230,7 @@ class TicketToRide extends React.Component {
 		{/*Q3. Code to call component that Displays Travellers.*/}
 		{this.state.selector === 2 && (<Display travellers={this.state.travellers} />)}
 		{/*Q4. Code to call the component that adds a traveller.*/}
+    {this.state.selector === 3 && (<Add bookTraveller={this.bookTraveller} />)}
 		{/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
 	</div>
       </div>
