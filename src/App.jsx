@@ -3,16 +3,14 @@ const initialTravellers = [
   {
     id: 1, name: 'Jack', phone: 88885555,
     bookingTime: new Date(),
-    email: 'jack@outlook.com',
-    seatNumber: '1',
+    email: 'jack@outlook.com',    
     trainNumber: 'train-0001',
 
   },
   {
     id: 2, name: 'Rose', phone: 88884444,
     bookingTime: new Date(),
-    email: 'rose@outlook.com',
-    seatNumber: '2',
+    email: 'rose@outlook.com',    
     trainNumber: 'train-0002',
     
   },
@@ -30,8 +28,7 @@ function TravellerRow(props) {
       <td>{traveller.name}</td>
       <td>{traveller.phone}</td>
       <td>{traveller.bookingTime.toLocaleString()}</td>
-      <td>{traveller.email}</td>
-      <td>{traveller.seatNumber}</td>
+      <td>{traveller.email}</td>      
       <td>{traveller.trainNumber}</td>    
 
     </tr>
@@ -51,8 +48,7 @@ function Display(props) {
           <th>Name</th>
           <th>Phone</th>
           <th>Booking Time</th>
-          <th>Email</th>
-          <th>Seat Number</th>
+          <th>Email</th>          
           <th>Train Number</th>   
 
         </tr>
@@ -74,33 +70,17 @@ class Add extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
-    const form = document.forms.addTraveller;
-    const seatNumber = form.seatNumber.value.trim(); // to remove white spaces
-    // check if seatNumber is number
-    if (isNaN(seatNumber) || seatNumber === '') {
-       alert('Please enter a valid numeric seat number.');
-        return;
-    }
-
-    // convert  seatNumber to integer
-    const seatNumberInt = parseInt(seatNumber, 10);
-
-    if (parseInt(seatNumber, 10) < 1 || parseInt(seatNumber, 10) > 100) {
-        alert('Please enter a seat number between 1 and 100.');
-        return;
-    }
+    const form = document.forms.addTraveller;    
     const passenger = {
       name: form.travellername.value.trim(),
       phone: form.phone.value.trim(),
-      email: form.email.value.trim(),
-      seatNumber: seatNumber,
+      email: form.email.value.trim(),      
       trainNumber: form.trainNumber.value.trim(),
     };
     this.props.bookTraveller(passenger);
     form.travellername.value = '';
     form.phone.value = '';
-    form.email.value = '';
-    form.seatNumber.value = '';
+    form.email.value = '';    
     form.trainNumber.value = '';
   }
 
@@ -110,8 +90,7 @@ class Add extends React.Component {
 	    {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
         <input type="text" name="travellername" placeholder="Name" />
         <input type="text" name="phone" placeholder="Phone" />
-        <input type="text" name="email" placeholder="Email" />
-        <input type="text" name="seatNumber" placeholder="Seat Number" />
+        <input type="text" name="email" placeholder="Email" />        
         <input type="text" name="trainNumber" placeholder="Train Number" />  
         <button>Add</button>
       </form>
@@ -162,27 +141,25 @@ class Homepage extends React.Component {
 		{/*Q2. Placeholder for Homepage code that shows free seats visually.*/}
 	      <h2>Seat Availability</h2>
         <div className="seats">
-          {[...Array(100)].map((e, i) => {
-            const seatNumber = (i + 1).toString();
-            const isOccupied = this.props.travellers.some(
-              traveller => traveller.seatNumber === seatNumber
-            );
+          {[...Array(10)].map((e, i) => {
+            const isOccupied = i < this.props.travellers.length; // check if seat is occupied
             return (
               <button
                 key={i}
                 style={{
-                  backgroundColor: isOccupied ? 'grey' : 'lightblue',
+                  backgroundColor: isOccupied ? 'grey' : 'green',
                   margin: '5px',
                   width: '30px',
                   height: '30px',
                 }}
               >
-                {seatNumber}
+                
               </button>
             );
           })}
         </div>
-        <p>Total Free Seats: {100 - this.props.travellers.length}</p>
+        <p>Total Occupied Seats: {this.props.travellers.length}</p> 
+        <p>Total Free Seats: {10 - this.props.travellers.length}</p>
   </div>);
 	}
 }
@@ -212,11 +189,8 @@ class TicketToRide extends React.Component {
 
   bookTraveller(passenger) {
 	    /*Q4. Write code to add a passenger to the traveller state variable.*/
-      const seatOccupied = this.state.travellers.some(
-        traveller => traveller.seatNumber === passenger.seatNumber
-      );
-      if (seatOccupied) {
-        alert('Seat is already occupied. Please choose another seat.');
+      if (this.state.travellers.length >= 10) { // 修改
+        alert('All seats are occupied. Cannot add more travellers.');
         return;
       }
       passenger.id = this.state.travellers.length + 1;
