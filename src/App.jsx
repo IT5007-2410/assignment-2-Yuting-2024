@@ -128,6 +128,16 @@ class Delete extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     /*Q5. Fetch the passenger details from the deletion form and call deleteTraveller()*/
+    const form = document.forms.deleteTraveller;    
+    const passenger = {
+    name: form.travellername.value,
+    id: parseInt(form.travellerid.value, 10),
+    };
+
+    this.props.deleteTraveller(passenger);
+    form.travellername.value = '';
+    form.travellerid.value = '';  
+    
   }
 
   render() {
