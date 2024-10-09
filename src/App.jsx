@@ -4,14 +4,14 @@ const initialTravellers = [
     id: 1, name: 'Jack', phone: 88885555,
     bookingTime: new Date(),
     email: 'jack@outlook.com',    
-    trainNumber: 'train-0001',
+    birthdate: '1998-01-01',
 
   },
   {
     id: 2, name: 'Rose', phone: 88884444,
     bookingTime: new Date(),
     email: 'rose@outlook.com',    
-    trainNumber: 'train-0002',
+    birthdate: '1982-02-02',
     
   },
 ];
@@ -29,7 +29,7 @@ function TravellerRow(props) {
       <td>{traveller.phone}</td>
       <td>{traveller.bookingTime.toLocaleString()}</td>
       <td>{traveller.email}</td>      
-      <td>{traveller.trainNumber}</td>    
+      <td>{traveller.birthdate}</td>    
 
     </tr>
   );
@@ -49,7 +49,7 @@ function Display(props) {
           <th>Phone</th>
           <th>Booking Time</th>
           <th>Email</th>          
-          <th>Train Number</th>   
+          <th>Birthdate</th>   
 
         </tr>
       </thead>
@@ -70,28 +70,35 @@ class Add extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
-    const form = document.forms.addTraveller;    
+    const form = document.forms.addTraveller;      
+    const name = form.travellername.value.trim(); 
+    const birthdate = form.birthdate.value.trim(); 
+    if (!name || !birthdate) { 
+      alert('Please input valid name and birthdate'); 
+      return; 
+    } 
     const passenger = {
-      name: form.travellername.value.trim(),
+      name: name, 
       phone: form.phone.value.trim(),
-      email: form.email.value.trim(),      
-      trainNumber: form.trainNumber.value.trim(),
-    };
+      email: form.email.value.trim(),
+      birthdate: birthdate, 
+    };    
     this.props.bookTraveller(passenger);
+    alert('Add successfully.'); 
     form.travellername.value = '';
     form.phone.value = '';
     form.email.value = '';    
-    form.trainNumber.value = '';
+    form.birthdate.value = '';
   }
 
   render() {
     return (
       <form name="addTraveller" onSubmit={this.handleSubmit}>
 	    {/*Q4. Placeholder to enter passenger details. Below code is just an example.*/}
-        <input type="text" name="travellername" placeholder="Name" />
+        <input type="text" name="travellername" placeholder="Name" required/>
         <input type="text" name="phone" placeholder="Phone" />
         <input type="text" name="email" placeholder="Email" />        
-        <input type="text" name="trainNumber" placeholder="Train Number" />  
+        <input type="date" name="birthdate" placeholder="Birthdate" required/>  
         <button>Add</button>
       </form>
     );
@@ -217,7 +224,7 @@ class TicketToRide extends React.Component {
         })); 
         alert('Deleted successfully'); 
       } else { 
-        alert('Delete failed, please input valid name and id'); // 修改
+        alert('Delete failed, please input valid name and id'); 
       }
   }
   render() {
