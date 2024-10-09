@@ -76,6 +76,15 @@ class Add extends React.Component {
     /*Q4. Fetch the passenger details from the add form and call bookTraveller()*/
     const form = document.forms.addTraveller;
     const seatNumber = form.seatNumber.value.trim(); // to remove white spaces
+    // check if seatNumber is number
+    if (isNaN(seatNumber) || seatNumber === '') {
+       alert('Please enter a valid numeric seat number.');
+        return;
+    }
+
+    // convert  seatNumber to integer
+    const seatNumberInt = parseInt(seatNumber, 10);
+
     if (parseInt(seatNumber, 10) < 1 || parseInt(seatNumber, 10) > 100) {
         alert('Please enter a seat number between 1 and 100.');
         return;
