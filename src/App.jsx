@@ -137,7 +137,7 @@ class Delete extends React.Component {
     this.props.deleteTraveller(passenger);
     form.travellername.value = '';
     form.travellerid.value = '';  
-    
+
   }
 
   render() {
@@ -171,7 +171,7 @@ class Homepage extends React.Component {
               <button
                 key={i}
                 style={{
-                  backgroundColor: isOccupied ? 'grey' : 'green',
+                  backgroundColor: isOccupied ? 'grey' : 'lightblue',
                   margin: '5px',
                   width: '30px',
                   height: '30px',
@@ -231,11 +231,20 @@ class TicketToRide extends React.Component {
 
   deleteTraveller(passenger) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
-    this.setState(prevState => ({
-      travellers: prevState.travellers.filter(
-       traveller => !(traveller.name === passenger.name && traveller.id === passenger.id)
-      ),
-    }));
+    const travellerExists = this.state.travellers.some(
+      traveller => traveller.name === passenger.name && traveller.id === passenger.id 
+      );
+
+      if (travellerExists) { 
+        this.setState(prevState => ({ 
+          travellers: prevState.travellers.filter( 
+            traveller => !(traveller.name === passenger.name && traveller.id === passenger.id) 
+          ), 
+        })); 
+        alert('Deleted successfully'); 
+      } else { 
+        alert('Delete failed, please input valid name and id'); // 修改
+      }
   }
   render() {
     return (
