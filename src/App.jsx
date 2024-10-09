@@ -126,6 +126,7 @@ class Delete extends React.Component {
       <form name="deleteTraveller" onSubmit={this.handleSubmit}>
 	    {/*Q5. Placeholder form to enter information on which passenger's ticket needs to be deleted. Below code is just an example.*/}
 	<input type="text" name="travellername" placeholder="Name" />
+  <input type="number" name="travellerid" placeholder="ID" />
         <button>Delete</button>
       </form>
     );
@@ -211,6 +212,11 @@ class TicketToRide extends React.Component {
 
   deleteTraveller(passenger) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
+    this.setState(prevState => ({
+      travellers: prevState.travellers.filter(
+       traveller => !(traveller.name === passenger.name && traveller.id === passenger.id)
+      ),
+    }));
   }
   render() {
     return (
@@ -232,7 +238,8 @@ class TicketToRide extends React.Component {
 		{/*Q4. Code to call the component that adds a traveller.*/}
     {this.state.selector === 3 && (<Add bookTraveller={this.bookTraveller} />)}
 		{/*Q5. Code to call the component that deletes a traveller based on a given attribute.*/}
-	</div>
+	  {this.state.selector === 4 && (<Delete deleteTraveller={this.deleteTraveller} />)}
+  </div>
       </div>
     );
   }
