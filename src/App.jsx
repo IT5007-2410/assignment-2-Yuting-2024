@@ -3,10 +3,18 @@ const initialTravellers = [
   {
     id: 1, name: 'Jack', phone: 88885555,
     bookingTime: new Date(),
+    email: 'jack@outlook.com',
+    seatNumber: 'A01',
+    trainNumber: 'train-0001',
+
   },
   {
     id: 2, name: 'Rose', phone: 88884444,
     bookingTime: new Date(),
+    email: 'rose@outlook.com',
+    seatNumber: '2',
+    trainNumber: 'train-0002',
+    
   },
 ];
 
