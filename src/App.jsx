@@ -79,9 +79,11 @@ class Add extends React.Component {
     } 
 
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const inputBirthdate = new Date(birthdate);
+    inputBirthdate.setHours(0, 0, 0, 0);
     if (inputBirthdate > today) {
-      alert('Please input valid name and birthdate,birthdate should not be later than today');
+      alert('Please input valid name and birthdate,birthdate should not be  later than today');
       return;
     }
 
