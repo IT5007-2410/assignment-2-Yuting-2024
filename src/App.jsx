@@ -77,6 +77,14 @@ class Add extends React.Component {
       alert('Please input valid name and birthdate'); 
       return; 
     } 
+
+    const today = new Date();
+    const inputBirthdate = new Date(birthdate);
+    if (inputBirthdate > today) {
+      alert('Please input valid name and birthdate,birthdate should not be later than today');
+      return;
+    }
+
     const passenger = {
       name: name, 
       phone: form.phone.value.trim(),
@@ -215,7 +223,7 @@ class TicketToRide extends React.Component {
 
   deleteTraveller(passenger) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
-    if (this.state.travellers.length === 0) { // 修改：当所有座位为空时提示
+    if (this.state.travellers.length === 0) { 
       alert('All seats are empty. No passengers can be deleted.');
       return;
     }
