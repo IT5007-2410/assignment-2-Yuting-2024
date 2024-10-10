@@ -83,8 +83,7 @@ class Add extends React.Component {
       email: form.email.value.trim(),
       birthdate: birthdate, 
     };    
-    this.props.bookTraveller(passenger);
-    alert('Add successfully.'); 
+    this.props.bookTraveller(passenger);    
     form.travellername.value = '';
     form.phone.value = '';
     form.email.value = '';    
@@ -98,7 +97,7 @@ class Add extends React.Component {
         <input type="text" name="travellername" placeholder="Name" required/>
         <input type="text" name="phone" placeholder="Phone" />
         <input type="text" name="email" placeholder="Email" />        
-        <input type="date" name="birthdate" placeholder="Birthdate" required/>  
+        <input type="date" name="birthdate" placeholder="Birthdate"required/>  
         <button>Add</button>
       </form>
     );
@@ -197,24 +196,29 @@ class TicketToRide extends React.Component {
 
   bookTraveller(passenger) {
 	    /*Q4. Write code to add a passenger to the traveller state variable.*/
-      if (this.state.travellers.length >= 10) { // 修改
-        alert('All seats are occupied. Cannot add more travellers.');
+      if (this.state.travellers.length >= 10) { // 
+        alert('Add failed. All seats are occupied. Cannot add more travellers.');
         return;
       }
       const maxId = this.state.travellers.reduce((max, traveller) => (traveller.id > max ? traveller.id : max), 0);
-      passenger.id = this.state.travellers.length + 1;
       passenger.id = maxId + 1;
       passenger.bookingTime = new Date();
       this.setState(prevState => {
         const newTravellers = [...prevState.travellers, passenger];
         console.log('New travellers:', newTravellers); // to see if works
         return { travellers: newTravellers };
+      }, () => {
+        alert('Add successfully.'); // notice after state is updated
       });
       
     }
 
   deleteTraveller(passenger) {
 	  /*Q5. Write code to delete a passenger from the traveller state variable.*/
+    if (this.state.travellers.length === 0) { // 修改：当所有座位为空时提示
+      alert('All seats are empty. No passengers can be deleted.');
+      return;
+    }
     const travellerExists = this.state.travellers.some(
       traveller => traveller.name === passenger.name && traveller.id === passenger.id 
       );
