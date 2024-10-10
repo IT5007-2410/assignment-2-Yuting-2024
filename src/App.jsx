@@ -167,6 +167,7 @@ class Homepage extends React.Component {
         </div>
         <p>Total Occupied Seats: {this.props.travellers.length}</p> 
         <p>Total Free Seats: {10 - this.props.travellers.length}</p>
+        <p>Total Seats: {10}</p>
   </div>);
 	}
 }
@@ -200,7 +201,9 @@ class TicketToRide extends React.Component {
         alert('All seats are occupied. Cannot add more travellers.');
         return;
       }
+      const maxId = this.state.travellers.reduce((max, traveller) => (traveller.id > max ? traveller.id : max), 0);
       passenger.id = this.state.travellers.length + 1;
+      passenger.id = maxId + 1;
       passenger.bookingTime = new Date();
       this.setState(prevState => {
         const newTravellers = [...prevState.travellers, passenger];
@@ -224,7 +227,7 @@ class TicketToRide extends React.Component {
         })); 
         alert('Deleted successfully'); 
       } else { 
-        alert('Delete failed, please input valid name and id'); 
+        alert('Delete failed, please input valid Name and Id'); 
       }
   }
   render() {
